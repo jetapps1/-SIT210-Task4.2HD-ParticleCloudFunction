@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Particle Argon LED Swtich</h1>
+
+    <script src="https://cdn.jsdelivr.net/npm/particle-api-js@8/dist/particle.min.js"></script>
+
+    <script>
+        var particle = new Particle();
+
+        const accessToken = '1a5493cf469e5b5d3489914d54cb5eb7918c2f58';
+        const deviceId = 'e00fce68214ad2d7762bedce';
+
+        function ledControl(cmd) {
+            document.getElementById("statusSpan").innerHTML = '';
+
+            particle.callFunction({deviceId, name:'led', argument: cmd, auth:accessToken}).then(
+                function(data) {
+                    document.getElementById("statusSpan").innerHTML = 'Call completed';
+                },
+                function(err) {
+                    document.getElementById("statusSpan").innerHTML = 'Error calling device: ' + err;
+                }
+            );
+        }
+
+        function change(checked, box) {
+            if (checked.checked) {
+                if(box == "led1"){
+                    ledControl('blue');
+                }else if(box == "led2"){
+                    ledControl('green');
+                }else if(box == "led3"){
+                    ledControl('red');
+                }
+            } else {
+                if(box == "led1"){
+                    ledControl('blueOFF');
+                }else if(box == "led2"){
+                    ledControl('greenOFF');
+                }else if(box == "led3"){
+                    ledControl('redOFF');
+            }
+        }
+    }
+
+    </script>
+
+    <input type="checkbox" id="led1" name="led1" value="led1" onchange="change(this, this.id)">
+    <label for="led1"> Blue</label><br>
+    <input type="checkbox" id="led2" name="led2" value="led2" onchange="change(this, this.id)">
+    <label for="led2"> Green</label><br>
+    <input type="checkbox" id="led3" name="led3" value="led3" onchange="change(this, this.id)">
+    <label for="led3">Red</label><br><br>
+
+            <p>&nbsp;</p>
+            <p><span id="statusSpan"></span></p>
+
+
+
+</body>
+</html>
